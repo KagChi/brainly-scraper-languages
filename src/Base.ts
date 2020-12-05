@@ -2,8 +2,84 @@ import { post } from "request-promise";
 import { clean, _required } from "./utils/Core";
 import { countryCode } from "./App";
 import BrainlyError from "./utils/BrainlyError";
-
-const format_graphql = `query SearchQuery($query: String!, $first: Int!, $after: ID) {\n	questionSearch(query: $query, first: $first, after: $after) {\n	edges {\n	  node {\ncontent\n		attachments{\nurl\n}\n		answers {\n			nodes {\ncontent\n				attachments{\nurl\n}\n}\n}\n}\n}\n}\n}\n`;
+const format_graphql = `
+    query SearchQuery($query: String!, $first: Int!, $after: ID) {
+        questionSearch(query: $query, first: $first, after: $after) {
+            count
+            edges {
+                node {
+                    databaseId
+                    content
+                    points
+                    created
+                    lastActivity
+                    attachments {
+                        url
+                    }
+                    author {
+                        databaseId
+                        nick
+                        points
+                        gender
+                        description
+                        isDeleted
+                        avatar {
+                            url
+                        }
+                        category
+                        clientType
+                        rank {
+                            databaseId
+                            name
+                        }
+                        receivedThanks
+                        bestAnswersCount
+                        helpedUsersCount
+                    }
+                    isAuthorsFirstQuestion
+                    canBeAnswered
+                    pointsForAnswer
+                    pointsForBestAnswer
+                    answers {
+                        nodes {
+                            databaseId
+                            content
+                            points
+                            isBest
+                            created
+                            rating
+                            ratesCount
+                            thanksCount
+                            attachments {
+                                url
+                            }
+                            author {
+                                databaseId
+                                nick
+                                points
+                                gender
+                                description
+                                isDeleted
+                                avatar {
+                                    url
+                                }
+                                category
+                                clientType
+                                rank {
+                                    databaseId
+                                    name
+                                }
+                                receivedThanks
+                                bestAnswersCount
+                                helpedUsersCount
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+`;
 const Brainly = async (query: string, count: number, lang?: string) => {
     let language = "";
     _required(query);
