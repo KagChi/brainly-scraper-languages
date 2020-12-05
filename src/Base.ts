@@ -133,7 +133,7 @@ const Brainly = async (query: string, count: number, lang?: string) => {
                     'success': true,
                     'length': final_data.length,
                     'message': 'Request Success',
-                    'data': final_data
+                    'data': question_list
             };
         } else {
             return {
